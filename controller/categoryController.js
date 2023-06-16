@@ -1,15 +1,20 @@
 const categories = require("../model/CategoryModel");
 
 const createCategory = async (req ,res)=>{
-    const { name } = req.body;
+    const { name , _id } = req.body;
+
+  
+        const taskCategory = new categories({
+            name : name ,
+            user : req.user ,
+
+        })
+        await taskCategory.save()
+        res.status(201).json({taskCategory});
+   
 
     // const taskCategory = await categories.create(req.body)
-    const taskCategory = new categories({
-        name : name ,
-        user : req.user ,
-    })
-    await taskCategory.save()
-    res.status(201).json({taskCategory});
+ 
     
 }
 

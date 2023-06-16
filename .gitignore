@@ -1,1 +1,5 @@
 node_modules/*
+/Controller/subCatController.js
+/model/SubCategory.js
+/routes/SubCategoryRoutes.js
+
