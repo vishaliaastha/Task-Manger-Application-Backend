@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage :storage }).single("fileName")
+const upload = multer({ storage :storage }).array("fileName" ,12)
 app.post('/upload' , upload , (req ,res ) => {
    res.send("File is Uploaded")
 })
