@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const categoriesSchema = new mongoose.Schema({
-    name: { type: mongoose.Schema.Types.Array, 
+    name: { type: String, 
           required: true 
     },
     user : {

@@ -1,7 +1,7 @@
 const categories = require("../model/CategoryModel");
 
 const createCategory = async (req ,res)=>{
-    const { name , _id } = req.body;
+    const { name } = req.body;
 
   
         const taskCategory = new categories({

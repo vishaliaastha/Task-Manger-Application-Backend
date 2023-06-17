@@ -8,6 +8,24 @@ const taskRoutes = require("./routes/TaskRoute")
 const userRoutes = require("./routes/userRoute");
 // const SubCategory = require("./routes/SubCategoryRoutes");
 
+// File Upload Uing Multer 
+const multer  = require('multer')
+const path = require('path')
+
+const storage = multer.diskStorage({
+    destination : function(req,res , cb){
+            cb(null ,'uploads' )
+    },
+    filename:function(req,file,cb){
+        const name = Date.now() + file.originalname
+        cb(null,name)
+    }
+})
+
+const upload = multer({ storage :storage }).single("fileName")
+app.post('/upload' , upload , (req ,res ) => {
+   res.send("File is Uploaded")
+})
 
 app.use(cors())
 
