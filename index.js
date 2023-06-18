@@ -12,6 +12,11 @@ const userRoutes = require("./routes/userRoute");
 const multer  = require('multer')
 const path = require('path')
 
+// Limiter 
+
+const rateLimit = require('express-rate-limit')
+
+
 const storage = multer.diskStorage({
     destination : function(req,res , cb){
             cb(null ,'uploads' )
@@ -22,10 +27,25 @@ const storage = multer.diskStorage({
     }
 })
 
+
+
 const upload = multer({ storage :storage }).array("fileName" ,12)
 app.post('/upload' , upload , (req ,res ) => {
    res.send("File is Uploaded")
 })
+
+
+
+const limiter = rateLimit({
+	windowMs: 1 * 60 * 1000, 
+	max: 10,
+     message:
+		'Too many Task created from this IP, please try again after an 1 minute',
+	standardHeaders: true, 
+	legacyHeaders: false, 
+})
+
+app.use('/tasks/update', limiter)
 
 app.use(cors())
 

@@ -1,7 +1,34 @@
+const { token } = require('morgan');
 const TaskModel = require('../model/TaskModel')
 const jwt = require('jsonwebtoken');
+// const {ObjectId } = require('mongodb');
+
+
+
 
 const SECRET_KEY = 'Node_API'
+const getTaskByStatus = async (req, res) => {
+    // const user = req.query.user;
+    
+    try {
+     
+      const counts = await TaskModel.aggregate([
+        // { $match: { user: ObjectId(user) } },
+        { $group: { _id: '$status', count: { $sum: 1 } } },
+      ]);
+  
+      const result = {};
+      counts.forEach((item) => {
+        result[item._id] = item.count;
+      });
+      res.json(result);
+    } catch (error) {
+      console.error('Error retrieving task counts:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+
 const getTask = async (req,res) => {
     try {
 
@@ -62,4 +89,4 @@ const deleteTask = async (req ,res) => {
 
 
 
-module.exports = {createTask , updateTask , deleteTask , getTask};
+module.exports = {createTask , updateTask , deleteTask , getTask ,getTaskByStatus};
