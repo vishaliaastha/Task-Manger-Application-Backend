@@ -1,9 +1,11 @@
 const express = require("express")
 const router = express.Router();
 const auth = require("../meddlewares/auth");
-const {makeFolder} = require('../controller/MakeFolderController')
+const {makeFolder , makeSubFolder} = require('../controller/MakeFolderController')
 
-router.post('/:makeFolder' , auth , makeFolder)
+router.post('/' , auth , makeFolder)
+router.post('/subFolder' , auth , makeSubFolder)
+
 
 
 module.exports  = router
