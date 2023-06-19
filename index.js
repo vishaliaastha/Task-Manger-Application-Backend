@@ -6,6 +6,8 @@ const cors = require("cors")
 const categoryRoutes = require('./routes/CategoryRoute')
 const taskRoutes = require("./routes/TaskRoute")
 const userRoutes = require("./routes/userRoute");
+const makeFolderRoute = require("./routes/MakeFolderRoute");
+
 // const SubCategory = require("./routes/SubCategoryRoutes");
 
 // File Upload Uing Multer 
@@ -14,7 +16,7 @@ const path = require('path')
 
 // Limiter 
 
-const rateLimit = require('express-rate-limit')
+const rateLimit = require('express-rate-limit');
 
 
 const storage = multer.diskStorage({
@@ -55,6 +57,7 @@ app.use(express.json())
 app.use('/users',userRoutes);
 app.use('/tasks',taskRoutes);
 app.use('/category',categoryRoutes);
+app.use('/folders', makeFolderRoute)
 // app.use("/subCategory" ,SubCategory)
 connectDB()
 app.listen(3000)

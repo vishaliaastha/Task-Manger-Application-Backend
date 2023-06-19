@@ -5,6 +5,8 @@ const taskSchema =new Schema({
     title : { type : String , required : true},
     status : { type : String , required : true} ,
     desc : {type : String , required : true},
+    duration : {type : Number ,required : true},
+    startOn: { type: Date, default: Date.now },
     user : {
         type : Schema.Types.ObjectId , 
         ref : 'User',

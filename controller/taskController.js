@@ -44,13 +44,15 @@ const getTask = async (req,res) => {
 
 const createTask = async (req, res) => {
     console.log(req.user)
-    const { title, desc, status } = req.body;
+    const { title, desc, status , duration,startOn } = req.body;
    
 
     const CreateNewTask = await TaskModel.create({
         title: title,
         desc: desc,
         status: status,
+        duration : duration,
+        startOn: startOn, 
         user: req.user,
         categoryId : req.body.categoryId
     })
