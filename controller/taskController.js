@@ -1,12 +1,12 @@
 const { token } = require('morgan');
 const TaskModel = require('../model/TaskModel')
 const jwt = require('jsonwebtoken');
-// const {ObjectId } = require('mongodb');
-
-
-
-
+const {ObjectId } = require('mongodb');
 const SECRET_KEY = 'Node_API'
+const User = require("../model/UserModel")
+const moment = require('moment');
+
+
 const getTaskByStatus = async (req, res) => {
     // const user = req.query.user;
     
@@ -43,7 +43,7 @@ const getTask = async (req,res) => {
 }
 
 const createTask = async (req, res) => {
-    console.log(req.user)
+    // console.log(req.user)
     const { title, desc, status , duration,startOn } = req.body;
    
 
@@ -58,6 +58,8 @@ const createTask = async (req, res) => {
     })
 
     try {
+      
+     
 
         await CreateNewTask.save();
         res.status(201).json(CreateNewTask);
@@ -71,6 +73,41 @@ const createTask = async (req, res) => {
     }
 
 }
+
+var timeLimiter = {};
+const limitAPICalls = async(req, res, next) => {
+  // const id = req.headers.authorization
+  const user = req.user
+  const userId = TaskModel.findOne({user : user})
+  // const user =await User.findOne({id : req._id})
+  // const user = await User.findOne({ user : req._id})
+  // const userId = req.user
+  // const userId = user
+  
+  var date = new Date();
+  var currentMinute =  date.getMinutes();
+
+  // const currentMinute = moment().startOf('minute').valueOf();
+
+  if (!timeLimiter[userId] || timeLimiter[userId].timestamp !== currentMinute) {
+
+    timeLimiter[userId] = {
+      count: 1,
+      timestamp: currentMinute
+    };
+  } else {
+   
+    if (timeLimiter[userId].count >= 10) {
+      return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    }
+    timeLimiter[userId].count++;
+  }
+
+  console.log(timeLimiter)
+  
+  next();
+}
+
 
 const updateTask = async (req , res) => {
     const {id:taskID} = req.params
@@ -91,4 +128,4 @@ const deleteTask = async (req ,res) => {
 
 
 
-module.exports = {createTask , updateTask , deleteTask , getTask ,getTaskByStatus};
+module.exports = {createTask ,limitAPICalls, updateTask , deleteTask , getTask ,getTaskByStatus };
