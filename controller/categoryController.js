@@ -15,8 +15,7 @@ const createCategory = async (req ,res)=>{
         res.status(201).json({taskCategory});
    
 
-    // const taskCategory = await categories.create(req.body)
- 
+  
     
 }
 

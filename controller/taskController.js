@@ -76,18 +76,14 @@ const createTask = async (req, res) => {
 
 var timeLimiter = {};
 const limitAPICalls = async(req, res, next) => {
-  // const id = req.headers.authorization
+
   const user = req.user
   const userId = TaskModel.findOne({user : user})
-  // const user =await User.findOne({id : req._id})
-  // const user = await User.findOne({ user : req._id})
-  // const userId = req.user
-  // const userId = user
+
   
   var date = new Date();
   var currentMinute =  date.getMinutes();
 
-  // const currentMinute = moment().startOf('minute').valueOf();
 
   if (!timeLimiter[userId] || timeLimiter[userId].timestamp !== currentMinute) {
 
